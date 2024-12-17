@@ -1,6 +1,4 @@
-# Import required libraries
 import streamlit as st
-import gradio as gr
 
 # Define the story text and audio URL
 story_texts = [
@@ -24,40 +22,40 @@ story_images = [
     "https://raw.githubusercontent.com/Alexwcjung/24-final-project/main/image6.jpeg"
 ]
 
-
-# Define the correct order for the images
 correct_order = [4, 5, 3, 1, 2]
+ordered_story_pairs = [(story_texts[i - 1], story_images[i - 1]) for i in correct_order]
 
-# Rearrange the story pairs according to the correct order
-ordered_story_pairs = [ (story_texts[i-1], story_images[i-1]) for i in correct_order ]
-
-# Function to check the order of the images
+# Function to check the order
 def check_order(order):
     if order == "45312":
-        return "Congratulations! You got the correct order."
+        return "🎉 Congratulations! You got the correct order. 🎉"
     else:
-        return "Try again. The order is not correct."
+        return "❌ Try again. The order is not correct."
 
-order_input = gr.Textbox(label="Enter the order of images (e.g., 31243)")
+# Streamlit App
+st.title("🌍 Story Reconstruction Activity")
+st.markdown("Listen to the story and place the images in the correct order!")
 
-# Define the Gradio Interface
-order_iface = gr.Interface(
-    fn=check_order,
-    inputs=order_input,
-    outputs="text",
-    description="Image Order Activity"
-)
+# Audio Section
+st.subheader("🎧 Listen to the Story:")
+st.audio(audio_url)
 
-with gr.Blocks() as demo:
-    gr.Markdown("# Story Reconstruction Activity")
-    gr.Audio(audio_url)
+# Display Text and Images
+st.subheader("🖼️ Story Steps:")
+for idx, (text, image) in enumerate(ordered_story_pairs, 1):
+    st.write(f"**Step {idx}:** {text}")
+    st.image(image, caption=f"Step {idx}", width=200)
 
-    gr.Markdown("## Place the images in order")
-    for num, (txt, img) in enumerate(ordered_story_pairs, 1):
-        gr.Markdown(f"**{num}**")
-        gr.Image(img, width=150, height=150)
-        gr.Markdown(txt)
+# User Input for Order
+st.subheader("🧩 Enter the Order of Images")
+user_input = st.text_input("Enter the image order as numbers (e.g., 45312):")
 
-    order_iface.render()
+# Check Button and Feedback
+if st.button("Check Order"):
+    if user_input:
+        result = check_order(user_input)
+        st.subheader(result)
+    else:
+        st.warning("Please enter the image order before submitting.")
 
-demo.launch(share=True)
+st.caption("Built with ❤️ using Streamlit")
