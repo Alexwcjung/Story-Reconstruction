@@ -1,5 +1,4 @@
 import streamlit as st
-import random
 
 # Define the story text and audio URL
 story_texts = [
@@ -13,7 +12,7 @@ story_texts = [
 
 audio_url = "https://raw.githubusercontent.com/Alexwcjung/24-final-project/main/output.mp3"
 
-# Original images in the correct order
+# Pair the text and images together in the correct order
 story_images = [
     "https://raw.githubusercontent.com/Alexwcjung/24-final-project/main/image1.jpeg",
     "https://raw.githubusercontent.com/Alexwcjung/24-final-project/main/image2.jpeg",
@@ -25,10 +24,6 @@ story_images = [
 
 correct_order = [4, 5, 3, 1, 2]
 ordered_story_pairs = [(story_texts[i - 1], story_images[i - 1]) for i in correct_order]
-
-# Shuffle the story pairs randomly
-random_story_pairs = ordered_story_pairs[:]
-random.shuffle(random_story_pairs)
 
 # Function to check the order
 def check_order(order):
@@ -45,9 +40,9 @@ st.markdown("Listen to the story and place the images in the correct order!")
 st.subheader("🎧 Listen to the Story:")
 st.audio(audio_url)
 
-# Display Text and Randomized Images
-st.subheader("🖼️ Randomized Story Steps:")
-for idx, (text, image) in enumerate(random_story_pairs, 1):
+# Display Text and Images
+st.subheader("🖼️ Story Steps:")
+for idx, (text, image) in enumerate(ordered_story_pairs, 1):
     st.write(f"**Step {idx}:** {text}")
     st.image(image, caption=f"Step {idx}", width=200)
 
