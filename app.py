@@ -1,4 +1,7 @@
 # Import required libraries
+import streamlit as st
+import pandas as pd
+import random
 import gradio as gr
 
 # Define the story text and audio URL
